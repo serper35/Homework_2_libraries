@@ -1,7 +1,9 @@
 package pro.sky.Employes.Service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.Employes.Exceptions.EmployeeAlreadyAddedException;
+import pro.sky.Employes.Exceptions.EmployeeBadRequestException;
 import pro.sky.Employes.Exceptions.EmployeeNotFoundException;
 import pro.sky.Employes.Exceptions.EmployeeStorageIsFullException;
 
@@ -29,10 +31,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public String addEmployee(String name, String lastName, int department, double salary) {
+
         Employees employees = new Employees(name, lastName, department, salary);
 
         if (workers.containsKey(name + lastName)) {
             throw new EmployeeAlreadyAddedException("Сотрудник уже есть в базе данных.");
+        }
+
+        boolean checkName = StringUtils.isAlpha(name + lastName);
+
+        if (!checkName) {
+            throw new EmployeeBadRequestException("В имени и фамилии могут содержаться только буквы");
         }
 
         if (workers.size() < WORKER_SIZE) {
