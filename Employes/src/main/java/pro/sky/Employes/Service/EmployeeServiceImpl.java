@@ -31,8 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public String addEmployee(String name, String lastName, int department, double salary) {
-        name = StringUtils.capitalize(name);
-        lastName = StringUtils.capitalize(lastName);
+
         Employees employees = new Employees(name, lastName, department, salary);
 
         if (workers.containsKey(name + lastName)) {
